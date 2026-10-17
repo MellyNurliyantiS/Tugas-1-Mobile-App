@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/splashscreen.dart';
+import 'splashscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,29 +10,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      title: 'Unigal Apps',
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Application 1',
-      home: SplashScreen(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Beranda'),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      body: const Center(
-        child: Text(
-          'Selamat datang!',
-          style: TextStyle(fontSize: 15),
-        ),
-      ),
+      home: const SplashScreen(),
     );
   }
 }

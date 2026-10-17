@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/main.dart';
+import 'screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,52 +10,51 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
-    starSplashScreen();
+    Timer(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    });
   }
-
-  starSplashScreen() async {
-    var duration = const Duration(seconds: 3);
-    return Timer(duration, (){
-     Navigator.of(context).pushReplacement(
-       MaterialPageRoute(builder: (context) => MyApp()),
-     );
-   });
-  }
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 20, 20, 20),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      body: Stack(
         children: [
-          Center(
+          Positioned.fill(
             child: Image.asset(
               'assets/splash.png',
-                width: 800.0,
-                height: 400.0,
-                fit: BoxFit.contain,
-              ),
+              fit: BoxFit.cover,
+            ),
           ),
-          SizedBox(
-            height: 24.0,
-          ),
-          Text(
-            'flutter_application_1',
-            style:TextStyle(
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-              color: const Color.fromARGB(255, 235, 231, 231),
+          Container(color: Colors.black.withValues(alpha: 0.4)),
+          const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.school, size: 80, color: Colors.white),
+                SizedBox(height: 16),
+                Text(
+                  'UNIGAL APPS',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 24),
+                CircularProgressIndicator(color: Colors.white),
+              ],
             ),
           ),
         ],
-      ),    
+      ),
     );
   }
 }
