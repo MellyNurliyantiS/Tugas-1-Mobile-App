@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dashboard_screen.dart';
+import '../theme/app_theme.dart';
+import '../widgets/gradient_background.dart';
 import 'crud_screen.dart';
+import 'dashboard_screen.dart';
+import 'post_page.dart';
 import 'profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -15,31 +18,43 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _screens = const [
     DashboardScreen(),
+    PostPage(),
     CrudScreen(),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.edit_note),
-            label: 'Kelola Data',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+    return GradientBackground(
+      child: Scaffold(
+        // IndexedStack: data tiap tab tidak hilang saat pindah tab
+        body: IndexedStack(index: _selectedIndex, children: _screens),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _selectedIndex,
+          backgroundColor: AppColors.bgBottom.withValues(alpha: 0.95),
+          indicatorColor: AppColors.accentStrong.withValues(alpha: 0.55),
+          onDestinationSelected: (i) => setState(() => _selectedIndex = i),
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.dashboard_outlined),
+              selectedIcon: Icon(Icons.dashboard),
+              label: 'Dashboard',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.newspaper),
+              label: 'Berita',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.edit_note),
+              label: 'Kelola Data',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

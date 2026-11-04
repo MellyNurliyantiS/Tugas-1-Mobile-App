@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/item_model.dart';
+import '../theme/app_theme.dart';
+import '../widgets/gradient_background.dart';
 
 class CrudScreen extends StatefulWidget {
   const CrudScreen({super.key});
@@ -18,6 +20,8 @@ class _CrudScreenState extends State<CrudScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(item == null ? 'Tambah Data' : 'Ubah Data'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -26,9 +30,10 @@ class _CrudScreenState extends State<CrudScreen> {
               controller: titleCtrl,
               decoration: const InputDecoration(labelText: 'Judul'),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             TextField(
               controller: descCtrl,
+              maxLines: 2,
               decoration: const InputDecoration(labelText: 'Deskripsi'),
             ),
           ],
@@ -71,18 +76,53 @@ class _CrudScreenState extends State<CrudScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Kelola Data (CRUD)')),
       body: _items.isEmpty
-          ? const Center(child: Text('Belum ada data. Tekan + untuk menambah.'))
+          ? const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.inbox_outlined, size: 64, color: Colors.white38),
+                  SizedBox(height: 12),
+                  Text('Belum ada data',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  SizedBox(height: 4),
+                  Text('Tekan tombol + untuk menambah',
+                      style: TextStyle(color: AppColors.textSoft)),
+                ],
+              ),
+            )
           : ListView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
               itemCount: _items.length,
               itemBuilder: (ctx, index) {
                 final item = _items[index];
-                return ListTile(
-                  title: Text(item.title),
-                  subtitle: Text(item.description),
-                  onTap: () => _showForm(item: item),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => setState(() => _items.removeAt(index)),
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: GlassCard(
+                    padding: EdgeInsets.zero,
+                    child: ListTile(
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                      leading: CircleAvatar(
+                        backgroundColor:
+                            AppColors.accentStrong.withValues(alpha: 0.45),
+                        child: const Icon(Icons.description_outlined,
+                            color: Colors.white),
+                      ),
+                      title: Text(item.title,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(
+                        item.description,
+                        style: const TextStyle(color: AppColors.textSoft),
+                      ),
+                      onTap: () => _showForm(item: item),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete_outline,
+                            color: Colors.pinkAccent),
+                        onPressed: () =>
+                            setState(() => _items.removeAt(index)),
+                      ),
+                    ),
                   ),
                 );
               },

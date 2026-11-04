@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -12,14 +13,35 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircleAvatar(radius: 40, child: Icon(Icons.person, size: 40)),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [AppColors.accent, AppColors.accentStrong],
+                ),
+              ),
+              child: const CircleAvatar(
+                radius: 48,
+                backgroundColor: AppColors.surface,
+                child: Icon(Icons.person, size: 48, color: Colors.white),
+              ),
+            ),
             const SizedBox(height: 16),
             const Text(
               'Mahasiswa Unigal',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Universitas Galuh',
+              style: TextStyle(color: AppColors.textSoft),
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFE53888),
+              ),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -27,11 +49,8 @@ class ProfileScreen extends StatelessWidget {
                   (route) => false,
                 );
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: const Text(
-                'Keluar (Logout)',
-                style: TextStyle(color: Colors.white),
-              ),
+              icon: const Icon(Icons.logout),
+              label: const Text('Keluar (Logout)'),
             ),
           ],
         ),
